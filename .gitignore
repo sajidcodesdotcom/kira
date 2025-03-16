@@ -1,0 +1,19 @@
+# Go Backend
+/backend/temp/
+/backend/bin/
+/backend/.env/
+
+
+# Frontend
+/frontend/node_modules/
+/frontend/.env
+/frontend/dist
+/frontend/*.local
+
+# Editor related
+.vscode/*
+
+#logs
+logs
+*.logs
+npm-debug.log*

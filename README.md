@@ -1,1 +1,1 @@
-# Kira - An Open source project management platform
+# Kira an open source project management tool.

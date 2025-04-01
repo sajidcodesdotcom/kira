@@ -88,7 +88,7 @@ func (r *PgUserRepository) GetByUsername(ctx context.Context, username string) (
 	query := `
 	select id, email, username, full_name, password, avatar_url, role, created_at, updated_at
 	from users
-	where email = $1
+	where username = $1
 	`
 
 	user := &models.User{}

@@ -25,6 +25,7 @@ func NewUser(fullName, email, password, username, role, avatarURL string) *User 
 		FullName:  fullName,
 		Email:     email,
 		Password:  password,
+		Username:  username,
 		AvatarURL: avatarURL,
 		Role:      role,
 		CreatedAt: now,

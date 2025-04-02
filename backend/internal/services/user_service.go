@@ -113,7 +113,7 @@ func (r *PgUserRepository) Update(ctx context.Context, user *models.User) error 
 	where id=$1
 	`
 
-	result, err := r.db.Exec(ctx, query, user.ID, user.Email, user.Username, user.FullName, user.Password, user.AvatarURL, user.Role, user.UpdatedAt)
+	result, err := r.db.Exec(ctx, query, user.ID, user.Email, user.Username, user.FullName, user.Password, user.AvatarURL, user.Role)
 	if err != nil {
 		return fmt.Errorf("failed to update user: %w", err)
 	}

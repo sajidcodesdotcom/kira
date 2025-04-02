@@ -18,10 +18,10 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func NewUser(fullName, email, password, username, role, avatarURL string) *User {
+func NewUser(ID uuid.UUID, fullName, email, password, username, role, avatarURL string) *User {
 	now := time.Now()
 	return &User{
-		ID:        uuid.New(),
+		ID:        ID,
 		FullName:  fullName,
 		Email:     email,
 		Password:  password,

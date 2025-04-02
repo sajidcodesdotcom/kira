@@ -35,12 +35,32 @@ func main() {
 	userHandlers := api.NewUserHandler(userRepo, validator.New())
 
 	mux.HandleFunc("/api/users", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == "POST" {
+		if r.Method == http.MethodGet {
+			userHandlers.ListUsers(w, r)
+		}
+	})
+
+	mux.HandleFunc("/api/user/create", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
 			userHandlers.CreateUser(w, r)
 		}
+	})
 
-		if r.Method == "GET" {
-			w.Write([]byte("teh gest request is working fine"))
+	mux.HandleFunc("/api/user/update", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPut {
+			userHandlers.UpdateUser(w, r)
+		}
+	})
+
+	mux.HandleFunc("/api/user/by-email", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			userHandlers.GetUserByEmail(w, r)
+		}
+	})
+
+	mux.HandleFunc("/api/user/by-username", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			userHandlers.GetByUsername(w, r)
 		}
 	})
 

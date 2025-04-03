@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
-	"github.com/sajidcodesdotcom/kira/internal/models"
 	"github.com/sajidcodesdotcom/kira/internal/services"
 	"github.com/sajidcodesdotcom/kira/utils"
 )
@@ -29,41 +28,6 @@ type UserData struct {
 	Password  string    `json:"password" validate:"required,min=8,max=100"`
 	Username  string    `json:"username" validate:"required,min=3,max=100"`
 	AvatarURL string    `json:"avatar_url" validate:"omitempty,url"`
-}
-
-func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	// create timeout context
-	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
-	r = r.WithContext(ctx)
-	defer cancel()
-
-	var userData UserData
-
-	if err := json.NewDecoder(r.Body).Decode(&userData); err != nil {
-		http.Error(w, "Failed to creat user (not able to read body)", http.StatusInternalServerError)
-		return
-	}
-
-	if err := h.validate.Struct(userData); err != nil {
-		errorString := utils.GetValidationErrors(err)
-		utils.RespondWithError(w, "incorrect user Data: "+errorString, http.StatusBadRequest)
-		return
-	}
-
-	hashedPassword, err := utils.HashPassword(userData.Password)
-	if err != nil {
-		utils.RespondWithError(w, "Failed to hash use password: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	user := models.NewUser(userData.ID, userData.FullName, userData.Email, hashedPassword, userData.Username, "user", userData.AvatarURL)
-
-	if err := h.userRepo.Create(r.Context(), user); err != nil {
-		utils.RespondWithError(w, "Failed to create user: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	utils.RespondWithJSON(w, user, http.StatusCreated)
 }
 
 func (h *UserHandler) GetUserByEmail(w http.ResponseWriter, r *http.Request) {

@@ -24,7 +24,7 @@ func CheckPassword(hashedPassword, plainPassword string) bool {
 }
 
 type Error struct {
-	Error string `json:error"`
+	Error string `json:"error"`
 }
 
 func RespondWithError(w http.ResponseWriter, message string, statusCode int) {

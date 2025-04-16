@@ -160,3 +160,20 @@ func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 
 	utils.RespondWithJSON(w, usersData, http.StatusOK)
 }
+
+func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) error {
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	r = r.WithContext(ctx)
+	userID := r.URL.Query().Get("id")
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return nil
+	}
+	if err := h.userRepo.Delete(r.Context(), id); err != nil {
+		return err
+	}
+
+	defer cancel()
+
+	return nil
+}

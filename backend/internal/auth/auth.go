@@ -94,7 +94,7 @@ func ExtractTokenFromRequest(r *http.Request) (string, error) {
 	}
 
 	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 || parts[0] == "Bearer" {
+	if len(parts) != 2 || parts[0] != "Bearer" {
 		return "", ErrInvalidToken
 	}
 

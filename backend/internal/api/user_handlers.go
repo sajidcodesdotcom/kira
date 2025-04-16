@@ -161,19 +161,19 @@ func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	utils.RespondWithJSON(w, usersData, http.StatusOK)
 }
 
-func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) error {
+func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
 	r = r.WithContext(ctx)
 	userID := r.URL.Query().Get("id")
 	id, err := uuid.Parse(userID)
 	if err != nil {
-		return nil
+		utils.RespondWithError(w, "Failed to parse UUID: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
 	if err := h.userRepo.Delete(r.Context(), id); err != nil {
-		return err
+		utils.RespondWithError(w, "Failed to delete user: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	defer cancel()
-
-	return nil
 }

@@ -18,6 +18,9 @@ export default function SignUpPage() {
             <div className="mb-4">
                 <Input type={"password"} id={"password"} placeholder={"Password"} className={""} />
             </div>
+            <div className="mb-4">
+                <Input type={"password"} id={"confirm-password"} placeholder={"Confirm Password"} className={""} />
+            </div>
             <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded p-1 hover:bg-blue-700">Sign Up</button>
         </form>
         </div>

@@ -57,7 +57,7 @@ func GetValidationErrors(err error) string {
 		case "email":
 			errMsgs = append(errMsgs, e.Field()+" must be a valid email")
 		case "min":
-			errMsgs = append(errMsgs, e.Field()+" must be at least"+e.Param()+" characters")
+			errMsgs = append(errMsgs, e.Field()+" must be at least "+e.Param()+" characters")
 		case "max":
 			errMsgs = append(errMsgs, e.Field()+" must not exceed "+e.Param()+" characters")
 		case "url":

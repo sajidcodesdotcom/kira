@@ -6,7 +6,9 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sajidcodesdotcom/kira/internal/models"
 )
@@ -22,7 +24,8 @@ type UserRepository interface {
 }
 
 type PgUserRepository struct {
-	db *pgxpool.Pool
+	db    *pgxpool.Pool
+	dbErr *pgconn.PgError
 }
 
 func NewPgUserRepository(db *pgxpool.Pool) *PgUserRepository {
@@ -36,6 +39,9 @@ func (r *PgUserRepository) Create(ctx context.Context, user *models.User) error 
 	`
 	_, err := r.db.Exec(ctx, query, user.ID, user.Email, user.Username, user.FullName, user.Password, user.AvatarURL, user.Role, user.CreatedAt, user.UpdatedAt)
 	if err != nil {
+		if errors.As(err, &r.dbErr) && r.dbErr.Code == pgerrcode.UniqueViolation {
+			return fmt.Errorf("user with this email or username already exists")
+		}
 		return fmt.Errorf("failed to create user in db: %w", err)
 	}
 	return nil
@@ -76,7 +82,7 @@ func (r *PgUserRepository) GetByEmail(ctx context.Context, email string) (*model
 
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, fmt.Errorf("no record found (finding by email): %w", err)
+			return nil, fmt.Errorf("No user with this email is found: please sign up first")
 		}
 		return nil, fmt.Errorf("failed to get user by email: %w", err)
 	}

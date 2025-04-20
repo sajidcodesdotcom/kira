@@ -177,3 +177,19 @@ func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 
 	defer cancel()
 }
+
+func (h *UserHandler) GetMe(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	r = r.WithContext(ctx)
+	defer cancel()
+
+	userID := r.Context().Value("user_id").(uuid.UUID)
+
+	user, err := h.userRepo.GetByID(r.Context(), userID)
+	if err != nil {
+		utils.RespondWithError(w, "Failed to get user: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	utils.RespondWithJSON(w, user, http.StatusOK)
+}

@@ -38,6 +38,7 @@ func main() {
 	authHandlers := api.NewAuthHandler(userRepo, validator.New())
 	router.HandleFunc("POST /api/auth/login", authHandlers.Login)
 	router.HandleFunc("POST /api/auth/register", authHandlers.Register)
+	router.HandleFunc("POST /api/auth/logout", authHandlers.Logout)
 
 	// user handlers
 	userHandlers := api.NewUserHandler(userRepo, validator.New())
@@ -56,6 +57,9 @@ func main() {
 	router.Handle("PUT /api/project/update", middleware.AuthMiddleware(http.HandlerFunc(projectHandlers.UpdateProject)))
 	router.Handle("DELETE /api/project/delete", middleware.AuthMiddleware(http.HandlerFunc(projectHandlers.DeleteProject)))
 	router.Handle("GET /api/project/by-owner", middleware.AuthMiddleware(http.HandlerFunc(projectHandlers.GetProjectsByOwner)))
+
+	// authenticated user
+	router.Handle("GET /api/auth/me", middleware.AuthMiddleware(http.HandlerFunc(userHandlers.GetMe)))
 
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://127.0.0.1:5173", "http://localhost:5173"}, // Include both formats

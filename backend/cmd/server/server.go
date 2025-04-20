@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 	"github.com/sajidcodesdotcom/kira/internal/api"
 	"github.com/sajidcodesdotcom/kira/internal/middleware"
 	"github.com/sajidcodesdotcom/kira/internal/services"
@@ -56,8 +57,17 @@ func main() {
 	router.Handle("DELETE /api/project/delete", middleware.AuthMiddleware(http.HandlerFunc(projectHandlers.DeleteProject)))
 	router.Handle("GET /api/project/by-owner", middleware.AuthMiddleware(http.HandlerFunc(projectHandlers.GetProjectsByOwner)))
 
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://127.0.0.1:5173", "http://localhost:5173"}, // Include both formats
+		AllowCredentials: true,
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization", "Accept"}, // Add this line
+	})
+
+	handler := c.Handler(router)
+
 	fmt.Print("server is running now...")
-	if err := http.ListenAndServe(port, router); err != nil {
+	if err := http.ListenAndServe(port, handler); err != nil {
 		log.Fatalf("Failed to ListenAndServe: %v", err)
 	}
 }

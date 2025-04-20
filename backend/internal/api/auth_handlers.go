@@ -37,10 +37,11 @@ type LoginRequest struct {
 }
 
 type RegisterRequest struct {
-	FullName string `json:"full_name" validate:"required,min=2,max=100"`
-	Email    string `json:"email" validate:"required,email"`
-	Username string `json:"username" validate:"required,min=3,max=100"`
-	Password string `json:"password" validate:"required,min=8,max=100"`
+	FullName  string `json:"full_name" validate:"required,min=2,max=100"`
+	Email     string `json:"email" validate:"required,email"`
+	Username  string `json:"username" validate:"required,min=3,max=100"`
+	Password  string `json:"password" validate:"required,min=8,max=100"`
+	AvatarURL string `json:"avatar_url" validate:"omitempty,url"`
 }
 
 func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {

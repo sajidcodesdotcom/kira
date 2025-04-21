@@ -2,7 +2,6 @@ export interface User {
     id: string;
     full_name: string;
     email: string;
-    password: string;
     username: string;
     role: string;
     avatar_url: string;
@@ -31,4 +30,9 @@ export interface Task {
     due_date: string;
     created_at: string;
     updated_at: string;
+}
+
+export type AuthResponse = {
+    token: string;
+    user: User;
 }

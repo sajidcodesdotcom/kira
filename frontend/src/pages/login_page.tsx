@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Input from "../components/input";
-import { apiRequest } from "../services/api_client";
-import { AuthResponse } from "../types/globals";
+import Input from "../components/common/input";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../hooks/auth_store";
+import { useAuthStore } from "../store/auth_store";
+import { AuthService } from "../services/auth_service";
 
 
 
@@ -34,10 +33,7 @@ export default function LoginPage() {
         setError(null)
         setLoading(true);
         try {
-            const data = await apiRequest<AuthResponse>("/api/auth/login", "POST", {
-                email,
-                password,
-            })
+            const data = await AuthService.login(email, password);
             setUser(data.user);
             navigate("/dashboard");
         } catch (error: any) {

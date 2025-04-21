@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../hooks/auth_store";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/auth_store";
 
  export default function Header() {
     const navigate = useNavigate()
@@ -15,11 +15,11 @@ import { useAuthStore } from "../hooks/auth_store";
     return (
         <header className="bg-gray-800 text-white p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <h1 className="text-2xl font-bold"><a href="/">Kira.</a></h1>
+                <h1 className="text-2xl font-bold"><Link to="/">Kira.</Link></h1>
                 <nav>
                     <ul className="flex space-x-4">
-                        <li><a href="/about" className="hover:text-gray-400">About</a></li>
-                        <li><a href="/contact" className="hover:text-gray-400">Contact</a></li>
+                        <li><Link to="/about" className="hover:text-gray-400">About</Link></li>
+                        <li><Link to="/contact" className="hover:text-gray-400">Contact</Link></li>
                     </ul>
                 </nav>
                 <div className="flex space-x-4">
@@ -27,8 +27,8 @@ import { useAuthStore } from "../hooks/auth_store";
                     <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">Logout</button>
                     ) :
                         <>
-                    <a href="/login" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Login</a>
-                    <a href="/signup" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Sign Up</a>
+                        <Link to="/login" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Login</Link>
+                        <Link to="/signup" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Sign Up</Link>
                         </>)
                 }
                 </div>

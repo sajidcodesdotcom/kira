@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes} from 'react-router-dom'
-import Header from './components/header'
+import Header from './components/layout/header'
 import HomePage from './pages/home_page'
 import SignUpPage from './pages/signup_page'
 import LoginPage from './pages/login_page'
 import DashboardPage from './pages/dashboard_page'
-import ProtectedRoute from './components/protected_route'
+import ProtectedRoute from './components/layout/protected_route'
 
 
 function App() {

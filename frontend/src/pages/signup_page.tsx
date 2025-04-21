@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Input from "../components/input";
-import { apiRequest } from "../services/api_client";
+import Input from "../components/common/input";
 import { useNavigate } from "react-router-dom";
-import { AuthResponse } from "../types/globals";
-import { useAuthStore } from "../hooks/auth_store";
+import { useAuthStore } from "../store/auth_store";
+import { AuthService } from "../services/auth_service";
 
 
 
@@ -41,12 +40,7 @@ export default function SignUpPage() {
         }
         setLoading(true);
         try {
-            const data = await apiRequest<AuthResponse>("/api/auth/register", "POST", {
-                full_name: fullName,
-                username,
-                email,
-                password,
-            })
+            const data = await AuthService.register(fullName, username, email, password);
             setUser(data.user);
             navigate("/dashboard");
         } catch (error: any) {

@@ -1,6 +1,7 @@
 import { create } from "zustand"
-import { AuthResponse, User } from "../types/globals"
+import { AuthResponse, User } from "../types/models"
 import { apiRequest } from "../services/api_client";
+import { AuthService } from "../services/auth_service";
 
 interface AuthStore {
     user: User | null;
@@ -18,7 +19,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     setUser: (user) => set({ user, isLoading: false, isLoggedIn: true }),
     checkAuthStatus: async () => {
         try {
-            const data = await apiRequest<AuthResponse>("/api/auth/me", "GET");
+            const data = await AuthService.getCurrentUser();
             set({ user: data.user, isLoggedIn: true, isLoading: false });
         } catch (error) {
             console.error("Error checking auth status:", error);
@@ -27,7 +28,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     },
     logout: async () => {
         try {
-            await apiRequest("/api/auth/logout", "POST");
+            await AuthService.logout();
             set({ user: null, isLoggedIn: false, isLoading: false });
         } catch (error) {
             console.error("Error logging out:", error);

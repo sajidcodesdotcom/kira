@@ -65,7 +65,8 @@ func main() {
 		AllowedOrigins:   []string{"http://127.0.0.1:5173", "http://localhost:5173"}, // Include both formats
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"Content-Type", "Authorization", "Accept"}, // Add this line
+		AllowedHeaders:   []string{"Content-Type", "Authorization", "Accept", "X-Requested-With"},
+		ExposedHeaders:   []string{"Set-Cookie"}, // Important for cookie operations
 	})
 
 	handler := c.Handler(router)

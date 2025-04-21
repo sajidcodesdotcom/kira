@@ -159,11 +159,6 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AuthHandler) Logout(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		utils.RespondWithError(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	auth.ClearTokenCookie(w)
 
 	utils.RespondWithJSON(w, "successfully logged out", http.StatusOK)

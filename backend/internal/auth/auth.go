@@ -102,24 +102,27 @@ func ExtractTokenFromRequest(r *http.Request) (string, error) {
 }
 
 func SetTokenCookie(w http.ResponseWriter, token string) {
+	isDevelopment := os.Getenv("APP_ENV") == "development"
 	http.SetCookie(w, &http.Cookie{
 		Name:     "auth_token",
 		Value:    token,
 		Path:     "/",
 		HttpOnly: true,
-		Secure:   true,
-		SameSite: http.SameSiteStrictMode,
+		Secure:   !isDevelopment,
+		SameSite: http.SameSiteLaxMode,
 		MaxAge:   24 * 60 * 60,
 	})
 }
 
 func ClearTokenCookie(w http.ResponseWriter) {
+	isDevelopment := os.Getenv("APP_ENV") == "development"
 	http.SetCookie(w, &http.Cookie{
 		Name:     "auth_token",
 		Value:    "",
 		Path:     "/",
 		HttpOnly: true,
-		Secure:   true,
+		Secure:   !isDevelopment,
+		SameSite: http.SameSiteLaxMode,
 		MaxAge:   -1,
 	})
 }

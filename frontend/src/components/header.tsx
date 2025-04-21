@@ -3,7 +3,7 @@ import { useAuthStore } from "../hooks/auth_store";
 
  export default function Header() {
     const navigate = useNavigate()
-    const {isLoggedIn,  logout} = useAuthStore()
+    const {isLoggedIn,  logout, isLoading} = useAuthStore()
     const handleLogout = async () => {
         try {
             logout();
@@ -23,13 +23,13 @@ import { useAuthStore } from "../hooks/auth_store";
                     </ul>
                 </nav>
                 <div className="flex space-x-4">
-                    { isLoggedIn ? (
+                    {!isLoading && (isLoggedIn ? (
                     <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded">Logout</button>
                     ) :
                         <>
                     <a href="/login" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Login</a>
                     <a href="/signup" className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Sign Up</a>
-                        </>
+                        </>)
                 }
                 </div>
             </div>

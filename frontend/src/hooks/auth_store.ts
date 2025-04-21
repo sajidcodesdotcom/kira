@@ -28,7 +28,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     logout: async () => {
         try {
             await apiRequest("/api/auth/logout", "POST");
-            set({ user: null, isLoggedIn: false });
+            set({ user: null, isLoggedIn: false, isLoading: false });
         } catch (error) {
             console.error("Error logging out:", error);
         }

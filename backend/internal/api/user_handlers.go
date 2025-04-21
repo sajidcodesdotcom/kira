@@ -8,6 +8,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
+	"github.com/sajidcodesdotcom/kira/internal/auth"
+	"github.com/sajidcodesdotcom/kira/internal/models"
 	"github.com/sajidcodesdotcom/kira/internal/services"
 	"github.com/sajidcodesdotcom/kira/utils"
 )
@@ -191,5 +193,25 @@ func (h *UserHandler) GetMe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.RespondWithJSON(w, user, http.StatusOK)
+	token, err := auth.GenerateToken(user)
+	if err != nil {
+		utils.RespondWithError(w, "Failed to generate token: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := AuthResponse{
+		Token: token,
+		User: &models.User{
+			ID:        user.ID,
+			FullName:  user.FullName,
+			Email:     user.Email,
+			Username:  user.Username,
+			Role:      user.Role,
+			AvatarURL: user.AvatarURL,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		},
+	}
+
+	utils.RespondWithJSON(w, response, http.StatusOK)
 }

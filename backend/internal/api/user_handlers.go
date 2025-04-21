@@ -165,6 +165,7 @@ func (h *UserHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 
 func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
 	r = r.WithContext(ctx)
 	userID := r.URL.Query().Get("id")
 	id, err := uuid.Parse(userID)
@@ -177,7 +178,6 @@ func (h *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	defer cancel()
 }
 
 func (h *UserHandler) GetMe(w http.ResponseWriter, r *http.Request) {
